@@ -36,7 +36,7 @@ app.get('/', async (req, res, next)=>{
     res.json( buscar )
 })
 
-app.post('/login', async (req, res, next)=>{
+app.post('/', async (req, res, next)=>{
     const { name , pass} = req.body
 
     const buscar = await User.findOne({ name , pass })
