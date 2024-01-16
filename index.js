@@ -43,6 +43,14 @@ const filmSchema = new mongoose.Schema(
 //modelo Film
 const Film = mongoose.model('Film' , filmSchema)
 
+//Schema MyFilm
+const myfilmSchema = new mongoose.Schema(
+    { src : String , alt : String },
+    { collection : 'myfilms'}
+)
+//modelo MyFilm
+const MyFilm = mongoose.model('MyFilm' , myfilmSchema)
+
 app.use(cors())
 app.use( express.json())
 app.use(express.urlencoded({extended: false}))
@@ -59,12 +67,17 @@ app.get('/', async (req, res, next)=>{
 app.get('/nav', async (req, res, next) => {
     const buscarLi = await  Li.find()
     res.json(buscarLi)
-});
+})
 
 app.get('/films', async (req, res, next) => {
     const buscarFilms = await  Film.find()
     res.json(buscarFilms)
-});
+})
+
+app.get('/myfilms', async (req, res, next) => {
+    const buscarMyFilms = await  MyFilm.find()
+    res.json(buscarMyFilms)
+})
 
 app.post('/', async (req, res, next)=>{
     const { name , pass} = req.body
