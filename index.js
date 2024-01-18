@@ -45,7 +45,7 @@ const Film = mongoose.model('Film' , filmSchema)
 
 //Schema MyFilm
 const myfilmSchema = new mongoose.Schema(
-    { src : String , alt : String },
+    { title : String , year : Number },
     { collection : 'myfilms'}
 )
 //modelo MyFilm
@@ -86,6 +86,21 @@ app.post('/', async (req, res, next)=>{
 
     res.json(buscar)
 })
+
+
+//insertar nueva pelicula
+app.post('/myfilms', async (req, res, next) => {
+    const { title, year } = req.body;
+    console.log('Incoming data:', { title, year });
+  
+    const newFilm = new MyFilm({ title, year });
+    await newFilm.save();
+  
+    const updatedMyFilms = await MyFilm.find();
+    console.log('Updated MyFilms:', updatedMyFilms);
+  
+    res.json(updatedMyFilms);
+  });
 
 
 // meter middlewares, router...
