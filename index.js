@@ -58,25 +58,39 @@ app.use(express.urlencoded({extended: false}))
 
 
 app.get('/', async (req, res, next)=>{
-
-    const buscar = await User.find()
-
-    res.json( buscar )
+    try{
+        const buscar = await User.find()
+        res.status(200).json( buscar )
+    } catch (error) {
+        next(error)
+    }
 })
 
 app.get('/nav', async (req, res, next) => {
-    const buscarLi = await  Li.find()
-    res.json(buscarLi)
+    try{
+        const buscarLi = await  Li.find()
+        res.status(200).json(buscarLi)
+    } catch (error) {
+        next(error)
+    }
 })
 
 app.get('/films', async (req, res, next) => {
-    const buscarFilms = await  Film.find()
-    res.json(buscarFilms)
+    try{
+        const buscarFilms = await  Film.find()
+        res.status(200).json(buscarFilms)
+    } catch (error) {
+        next(error)
+    }
 })
 
 app.get('/myfilms', async (req, res, next) => {
-    const buscarMyFilms = await  MyFilm.find()
-    res.json(buscarMyFilms)
+    try{
+        const buscarMyFilms = await  MyFilm.find()
+        res.status(200).json(buscarMyFilms)
+    } catch (error) {
+        next(error)
+    }
 })
 
 app.post('/', async (req, res, next)=>{
@@ -90,20 +104,59 @@ app.post('/', async (req, res, next)=>{
 
 //insertar nueva pelicula
 app.post('/myfilms', async (req, res, next) => {
-    const { title, year } = req.body;
-    console.log('Incoming data:', { title, year });
-  
-    const newFilm = new MyFilm({ title, year });
-    await newFilm.save();
-  
-    const updatedMyFilms = await MyFilm.find();
-    console.log('Updated MyFilms:', updatedMyFilms);
-  
-    res.json(updatedMyFilms);
-  });
+    try{
+        const { title, year } = req.body
+      
+        const newFilm = new MyFilm({ title, year })
+        await newFilm.save()
+      
+        const updatedMyFilms = await MyFilm.find()
+      
+        res.status(201).json(updatedMyFilms)
+    }catch (error) {
+        next(error)
+    }
+    
+  })
+
+  //editar pelicula insertada
+    app.put('/myfilms/:id', async (req, res, next) => {
+    try {
+      const { id } = req.params
+      const { title, year } = req.body
+
+      await MyFilm.findByIdAndUpdate(id, { title, year })
+      const updatedMyFilms = await MyFilm.find()
+
+      res.status(200).json(updatedMyFilms)
+    } catch (error) {
+      next(error)
+    }
+  })
+
+
+//eliminar pelicula
+app.delete('/myfilms/:id', async (req, res, next) => {
+    try {
+        const { id } = req.params
+
+        await MyFilm.findByIdAndDelete(id)
+        const updatedMyFilms = await MyFilm.find()
+        
+        res.status(200).json(updatedMyFilms)
+    } catch (error) {
+        next(error)
+    }
+})
 
 
 // meter middlewares, router...
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+    let { status, message } = err
+    status = status ? status : 500
+    res.status(status).json(message)
+  })
 
 app.listen(3000, ()=> console.log('API iniciada'))
