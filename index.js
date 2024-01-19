@@ -51,6 +51,16 @@ const myfilmSchema = new mongoose.Schema(
 //modelo MyFilm
 const MyFilm = mongoose.model('MyFilm' , myfilmSchema)
 
+
+//Schema Highlight
+const highlightSchema = new mongoose.Schema(
+    { icon : String , text : String },
+    { collection : 'highlights'}
+)
+//modelo Highlight
+const Highlight = mongoose.model('Highlight' , highlightSchema)
+
+
 app.use(cors())
 app.use( express.json())
 app.use(express.urlencoded({extended: false}))
@@ -88,6 +98,15 @@ app.get('/myfilms', async (req, res, next) => {
     try{
         const buscarMyFilms = await  MyFilm.find()
         res.status(200).json(buscarMyFilms)
+    } catch (error) {
+        next(error)
+    }
+})
+
+app.get('/highlights', async (req, res, next) => {
+    try{
+        const buscarHighlights = await  Highlight.find()
+        res.status(200).json(buscarHighlights)
     } catch (error) {
         next(error)
     }
