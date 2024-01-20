@@ -1,3 +1,17 @@
+/*-----------------------------------------------------------------------
+ * Express API
+ * Conectamos con la bbdd en MongoDB Atlas para recibir la información
+ * 
+ * middlewares  {cors}
+ * routing      {Express Router}
+ * odm          {mongoose}
+ * endpoint     {/}              [get, post]
+ * endpoint     {/nav}           [get]
+ * endpoint     {/films}         [get]
+ * endpoint     {/myfilms}       [get, post]
+ * endpoint     {/myfilms/:id}   [put, delete]
+ * endpoint     {/highlights}    [get]
+-----------------------------------------------------------------------*/
 console.clear()
 
 const express  = require('express')
@@ -25,7 +39,9 @@ app.use( router )
 
 
 
-// Middleware de error 500
+/*-------------------------
+Middleware de error 500
+---------------------------*/
 app.use((err, req, res, next) => {
     let { status, message } = err
     status = status 

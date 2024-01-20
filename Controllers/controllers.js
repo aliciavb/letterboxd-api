@@ -1,3 +1,7 @@
+/*-----------------------------------------------------------------------
+ * Controllers
+ * Realizamos cada método get, post, put o delete para cada schema y modelo
+-----------------------------------------------------------------------*/
 const {
     User,
     Li,
